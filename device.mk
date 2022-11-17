@@ -28,6 +28,10 @@ DEVICE_PATH := device/samsung/a25x
 ifeq ($(WITH_GMS),true)
 PRODUCT_PACKAGES += \
     RemovePackagesa25x
+
+# Google Deskclock permission
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/default-permissions_com.google.android.deskclock.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions_com.google.android.deskclock.xml
 endif
 
 # Audio - Configuration
