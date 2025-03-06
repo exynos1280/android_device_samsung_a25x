@@ -1,0 +1,13 @@
+cc_prebuilt_binary {
+    name: "RemovePackagesa25x",
+    overrides: [
+        "AndroidAutoStubPrebuilt",
+        "EmergencyInfoGoogleNoUi",
+        "Flipendo",
+        "GoogleFeedback",
+    ],
+    strip: {
+        none: true,
+    },
+    srcs: ["RemovePackagesa25x"],
+}
