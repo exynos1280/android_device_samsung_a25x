@@ -1,5 +1,5 @@
 #
-# Copyright (C) The LineageOS Project
+# Copyright (C) The PixelOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,20 @@
 # Inherit from a25x device
 $(call inherit-product, device/samsung/a25x/device.mk)
 
-# Inherit some common Lineage stuff
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+# Inherit some common PixelOS stuff
+$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
 
 # Device identifier, this must come after all inclusions
 PRODUCT_DEVICE := a25x
-PRODUCT_NAME := lineage_a25x
+PRODUCT_NAME := aosp_a25x
 PRODUCT_BRAND := samsung
 PRODUCT_MODEL := SM-A256E
 PRODUCT_MANUFACTURER := samsung
 PRODUCT_SHIPPING_API_LEVEL := 34
 PRODUCT_CHARACTERISTICS := phone
+
+# Boot Animation
+TARGET_SCREEN_WIDTH := 1080
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="a25xdxx-user 15 AP3A.240905.015.A2 A256EXXS8CYG3 release-keys" \
