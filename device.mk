@@ -48,6 +48,11 @@ PRODUCT_PACKAGES += \
     init.a25x.rc \
     init.a25x.unify.rc
 
+# Matlog
+ifeq ($(TARGET_BUILD_VARIANT),user)
+TARGET_DISABLE_MATLOG := true
+endif
+
 # Nfc
 PRODUCT_PACKAGES += android.hardware.nfc-service.st
 
