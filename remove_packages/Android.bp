@@ -5,6 +5,10 @@ cc_prebuilt_binary {
         "EmergencyInfoGoogleNoUi",
         "Flipendo",
         "GoogleFeedback",
+        "SafetyHubSuwPrebuilt",
+        "KidsSupervisionStub",
+        "BetterBugStub",
+        "Tycho",
     ],
     strip: {
         none: true,
