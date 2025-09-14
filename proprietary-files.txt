@@ -1,6 +1,6 @@
 # Proprietary files - from Samsung package version A256EXXS8CYG3, unless pinned
 
-# Audio Firmware
+# Audio - Firmware
 vendor/firmware/abov/a96t396_a25x_main.bin
 vendor/firmware/APBargeIn_AUDIO_SLSI.bin
 vendor/firmware/SetMultiCalInfo.bin
@@ -12,31 +12,31 @@ vendor/firmware/calliope_dram.bin
 vendor/firmware/sb_music.bin
 vendor/firmware/sb_others.bin
 
-# Audio Firmware
+# Audio - Firmware - for SM-A256E
 vendor/firmware/APDV_AUDIO_SLSI.bin:vendor/firmware/SM-A256E/APDV_AUDIO_SLSI.bin
 vendor/firmware/AP_AUDIO_SLSI.bin:vendor/firmware/SM-A256E/AP_AUDIO_SLSI.bin
 vendor/firmware/calliope_sram.bin:vendor/firmware/SM-A256E/calliope_sram.bin
 vendor/firmware/vts.bin:vendor/firmware/SM-A256E/vts.bin
 
-# Audio Firmware - from SM-A2560 - A2560ZHS7CYG4
+# Audio - Firmware - from SM-A2560 - A2560ZHS7CYG4
 vendor/firmware/SM-A2560/APDV_AUDIO_SLSI.bin|93ffe051b993056e60f644aacd28545509a96aff
 vendor/firmware/SM-A2560/AP_AUDIO_SLSI.bin|8b41b80969b5a09d8f72d34cef2fe2d3b4e5ed6e
 vendor/firmware/SM-A2560/calliope_sram.bin|c851c59c65b7a420e9575e80aabd63950b686683
 vendor/firmware/SM-A2560/vts.bin|3a386c86614a68ee2289303eba76fc0dd661fe1b
 
-# Audio Firmware - from SM-A256B - A256BXXS8CYG4
+# Audio - Firmware - from SM-A256B - A256BXXS8CYG4
 vendor/firmware/SM-A256B/APDV_AUDIO_SLSI.bin|93ffe051b993056e60f644aacd28545509a96aff
 vendor/firmware/SM-A256B/AP_AUDIO_SLSI.bin|8b41b80969b5a09d8f72d34cef2fe2d3b4e5ed6e
 vendor/firmware/SM-A256B/calliope_sram.bin|492d60ea7a1db1d64d978642c18b89472cb79909
 vendor/firmware/SM-A256B/vts.bin|0197a7979327be0387d78fcc4e8fbcebff8aaabf
 
-# Bluetooth Firmware
+# Bluetooth - Firmware
 vendor/etc/wifi/mx140_bt.hcf
 
 # Camera
 vendor/lib64/hw/camera.s5e8825.so
 
-# Camera dependencies
+# Camera - Dependencies
 vendor/lib64/libMERTA.so
 vendor/lib64/libexynoscamera_merta_plugin.so
 vendor/lib64/libexynoscamera_swlme_plugin.so
@@ -45,7 +45,7 @@ vendor/lib64/liblmecpu.so
 vendor/lib64/libsec2lsi_conversion.so
 vendor/lib64/libswlme.so
 
-# Patched camera HAL
+# Camera - Patched HAL
 vendor/lib64/libexynoscamera3.so|8c4be451367521acdd68cd81301f0cc0ddf8c2d1|5e5cd88ec3500bab8b99517ac43c232b00c2fe81
 
 # Fingerprint
@@ -78,7 +78,7 @@ vendor/firmware/tfa98xx.cnt
 vendor/firmware/txse1.bin
 vendor/firmware/txse2.bin
 
-# Firmware
+# Firmware - for SM-A256E
 vendor/firmware/NPU.bin:vendor/firmware/SM-A256E/NPU.bin
 vendor/firmware/mfc_fw.bin:vendor/firmware/SM-A256E/mfc_fw.bin
 vendor/firmware/os.checked.bin:vendor/firmware/SM-A256E/os.checked.bin
@@ -103,7 +103,7 @@ vendor/lib64/libhermes.so
 vendor/lib64/libhermes_bdbridge.so
 vendor/lib64/vendor.samsung.hardware.security.hermes-V1-ndk_platform.so
 
-# Hermes dependencies
+# Hermes - Dependencies
 vendor/lib64/libhwvault.so
 vendor/lib64/libisosechw.so
 vendor/lib64/libshctrl.so
@@ -119,18 +119,18 @@ vendor/lib64/libskeymint_cli.so
 vendor/etc/nfc/st21nfc_conf.txt
 vendor/lib64/nfc_nci.st21nfc.st.so
 
-# Ramdisk firmware
-vendor_ramdisk/vendor/firmware/ft3519_a25x.bin
-vendor_ramdisk/vendor/firmware/gt9895_a25x.bin
+# Ramdisk - Firmware
+vendor/firmware/ft3519_a25x.bin:vendor_ramdisk/vendor/firmware/ft3519_a25x.bin
+vendor/firmware/gt9895_a25x.bin:vendor_ramdisk/vendor/firmware/gt9895_a25x.bin
 
-# Recovery firmware
-vendor_ramdisk/vendor/firmware/ft3519_a25x.bin:recovery/root/vendor/firmware/ft3519_a25x.bin
-vendor_ramdisk/vendor/firmware/gt9895_a25x.bin:recovery/root/vendor/firmware/gt9895_a25x.bin
+# Recovery - Firmware
+vendor/firmware/ft3519_a25x.bin:recovery/root/vendor/firmware/ft3519_a25x.bin
+vendor/firmware/gt9895_a25x.bin:recovery/root/vendor/firmware/gt9895_a25x.bin
 
 # RIL
 vendor/etc/floating_feature.xml
 
-# TEEgris Firmware
+# TEEgris - Firmware - for SM-A256E
 vendor/tee/driver/00000000-0000-0000-0000-494363447256:vendor/tee/SM-A256E/driver/00000000-0000-0000-0000-494363447256
 vendor/tee/driver/00000000-0000-0000-0000-4d53546d7374:vendor/tee/SM-A256E/driver/00000000-0000-0000-0000-4d53546d7374
 vendor/tee/driver/00000000-0000-0000-0000-53626f786476:vendor/tee/SM-A256E/driver/00000000-0000-0000-0000-53626f786476
@@ -252,7 +252,7 @@ vendor/tee/SM-A256B/ffffffff-0000-0000-0000-000000000030|c417f1b3aa7a13574908e82
 vendor/etc/vintf/manifest/iweaver_v1_manifest.xml
 vendor/lib64/android.hardware.weaver@1.0.so:vendor/lib64/android.weaver@1.0.so;FIX_SONAME
 
-# Weaver Firmware
+# Weaver - Firmware
 vendor/etc/secnvm/k250a_41000001_1.img
 vendor/etc/secnvm/k250a_41000003_0.img
 vendor/etc/secnvm/k250a_41000005_c.img

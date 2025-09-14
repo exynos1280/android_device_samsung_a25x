@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Inherit the proprietary files
+# Inherit proprietary files
 include vendor/samsung/a25x/BoardConfigVendor.mk
 
-# Inherit the proprietary files from common tree
+# Inherit board configuration from common tree
 include device/samsung/s5e8825-common/BoardConfigCommon.mk
 
 DEVICE_PATH := device/samsung/a25x

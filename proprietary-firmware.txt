@@ -1,5 +1,4 @@
 # Firmware for model SM-A2560 - from Samsung package version A2560ZHS7CYG4
-
 fld.bin_SM-A2560|316f17e3bef6165df3927a167854504a9269e812
 harx.bin_SM-A2560|c5f47566c091221864e990276a6a72caa6d8cfb3
 keystorage.bin_SM-A2560|e243102903eecb737b9a518015645912e7f9054e
@@ -13,7 +12,6 @@ uh.bin_SM-A2560|29994a086a0e3dcc3ff8a5467e316811750ca391
 up_param.bin_SM-A2560|41aaa6bcfe6be22c36148da3499345741e1ef2c7
 
 # Firmware for model SM-A256B - from Samsung package version A256BXXS8CYG4
-
 fld.bin_SM-A256B|3da3ae76133807ce4ff5543fb48e04980787b3cd
 harx.bin_SM-A256B|ac40ba8745b7ee8431a1a5d42cc5ee54d5ae2e68
 keystorage.bin_SM-A256B|bc52501063e3eb2e50005a7286ca1ad23db3b480
@@ -27,7 +25,6 @@ uh.bin_SM-A256B|3ae4bfbc5bbd36cff8eacc062209d305410ddc03
 up_param.bin_SM-A256B|b643cdf03804b496d56744efdec5f267ac7521d0
 
 # Firmware for model SM-A256E - from Samsung package version A256EXXS8CYG3
-
 fld.bin_SM-A256E|7676634cc720581bdb5c1accfe504f56b18f6c47
 harx.bin_SM-A256E|8f870156bff1ab464f6cbc5bfd7871e97cbebfe4
 keystorage.bin_SM-A256E|c23661005a4516f7962b277ec1b0edc58687935e
