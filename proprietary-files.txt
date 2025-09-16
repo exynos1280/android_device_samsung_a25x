@@ -3,6 +3,7 @@
 # Audio - Firmware
 vendor/firmware/abov/a96t396_a25x_main.bin
 vendor/firmware/APBargeIn_AUDIO_SLSI.bin
+vendor/firmware/APBiBF_AUDIO_SLSI.bin
 vendor/firmware/SetMultiCalInfo.bin
 vendor/firmware/SoundBoosterParam.bin
 vendor/firmware/a2dpcom.bin

@@ -9,7 +9,6 @@ sboot.bin_SM-A2560|e5d5dc82bb8462d3964ea2f52525a358198f323b
 tzar.img_SM-A2560|1d67391c26dc5609a3cc901728390cf224cdb38f
 tzsw.img_SM-A2560|9fcc3f88b0b7a5678db15b0ee6faa67c8a2eb307
 uh.bin_SM-A2560|29994a086a0e3dcc3ff8a5467e316811750ca391
-up_param.bin_SM-A2560|41aaa6bcfe6be22c36148da3499345741e1ef2c7
 
 # Firmware for model SM-A256B - from Samsung package version A256BXXS8CYG4
 fld.bin_SM-A256B|3da3ae76133807ce4ff5543fb48e04980787b3cd
@@ -22,7 +21,6 @@ sboot.bin_SM-A256B|3785b080d05c0ebf4c9d22f1ad14da3095b84e50
 tzar.img_SM-A256B|d5dc9c236982e6f6852e87677a9edd5943f630f1
 tzsw.img_SM-A256B|381a2a82189fbd687d0a8c278573e38da0f766d3
 uh.bin_SM-A256B|3ae4bfbc5bbd36cff8eacc062209d305410ddc03
-up_param.bin_SM-A256B|b643cdf03804b496d56744efdec5f267ac7521d0
 
 # Firmware for model SM-A256E - from Samsung package version A256EXXS8CYG3
 fld.bin_SM-A256E|7676634cc720581bdb5c1accfe504f56b18f6c47
@@ -35,7 +33,6 @@ sboot.bin_SM-A256E|17cf088b3af1bf034d104a055c614100a10f2f73
 tzar.img_SM-A256E|49d8b524971fefac021f901427f360607bafed3c
 tzsw.img_SM-A256E|f9093cef1f54650a7865046e2d5edd75c7ea688f
 uh.bin_SM-A256E|571ba2b4d946db5fd8a956ac630779625527fd94
-up_param.bin_SM-A256E|96d7f9a978b584082e6d5e12f777104de8070aab
 
 # File containing the supported models, one per line
 models|d740e499e29d5992d412c22ffd9afe89ea2dc02c
