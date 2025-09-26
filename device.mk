@@ -25,8 +25,10 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
 DEVICE_PATH := device/samsung/a25x
 
+ifeq ($(WITH_GMS),true)
 PRODUCT_PACKAGES += \
     RemovePackagesa25x
+endif
 
 # Audio
 PRODUCT_COPY_FILES += \
