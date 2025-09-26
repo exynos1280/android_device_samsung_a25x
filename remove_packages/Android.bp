@@ -2,13 +2,8 @@ cc_prebuilt_binary {
     name: "RemovePackagesa25x",
     overrides: [
         "AndroidAutoStubPrebuilt",
-        "EmergencyInfoGoogleNoUi",
         "Flipendo",
         "GoogleFeedback",
-        "SafetyHubSuwPrebuilt",
-        "KidsSupervisionStub",
-        "BetterBugStub",
-        "Tycho",
     ],
     strip: {
         none: true,
