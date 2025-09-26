@@ -20,6 +20,15 @@ $(call inherit-product, device/samsung/a25x/device.mk)
 # Inherit some common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Gapps support
+WITH_GMS ?= false
+
+ifeq ($(WITH_GMS),true)
+# Inherit from GMS product config
+$(call inherit-product-if-exists, vendor/google/gms/config.mk)
+$(call inherit-product-if-exists, vendor/google/pixel/config.mk)
+endif
+
 # Device identifier, this must come after all inclusions
 PRODUCT_DEVICE := a25x
 PRODUCT_NAME := lineage_a25x
