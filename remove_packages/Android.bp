@@ -4,6 +4,8 @@ cc_prebuilt_binary {
         "AndroidAutoStubPrebuilt",
         "Flipendo",
         "GoogleFeedback",
+        // Remove LineageOS calendar app (Etar)
+        "Etar",
     ],
     strip: {
         none: true,
