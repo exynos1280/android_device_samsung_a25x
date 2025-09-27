@@ -27,7 +27,8 @@ DEVICE_PATH := device/samsung/a25x
 
 ifeq ($(WITH_GMS),true)
 PRODUCT_PACKAGES += \
-    RemovePackagesa25x
+    RemovePackagesa25x \
+    Launcher3OverlayGMS
 endif
 
 # Audio
