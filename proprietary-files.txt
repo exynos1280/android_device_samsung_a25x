@@ -258,7 +258,7 @@ vendor/etc/secnvm/k250a_41000001_1.img
 vendor/etc/secnvm/k250a_41000003_0.img
 vendor/etc/secnvm/k250a_41000005_c.img
 
-# WiFi
+# Wi-Fi
 vendor/etc/wifi/mx140_common.hcf
 vendor/etc/wifi/mx140_t_wlan.hcf
 vendor/etc/wifi/mx140_t_wlan_t.hcf
