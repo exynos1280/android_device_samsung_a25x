@@ -1,0 +1,16 @@
+//
+// Copyright (C) The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "libnfc-nci.conf",
+    src: "libnfc-nci.conf",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "libnfc-hal-st.conf",
+    src: "libnfc-hal-st.conf",
+    vendor: true,
+}
