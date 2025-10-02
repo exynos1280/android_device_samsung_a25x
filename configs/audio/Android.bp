@@ -1,0 +1,22 @@
+//
+// Copyright (C) The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "audio_board_info.xml",
+    src: "audio_board_info.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "mixer_gains.xml",
+    src: "mixer_gains.xml",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "mixer_paths.xml",
+    src: "mixer_paths.xml",
+    vendor: true,
+}
