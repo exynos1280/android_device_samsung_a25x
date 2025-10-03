@@ -31,11 +31,11 @@ PRODUCT_PACKAGES += \
     Launcher3OverlayGMS
 endif
 
-# Audio
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/audio/mixer_gains.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_gains.xml \
-    $(DEVICE_PATH)/configs/audio/mixer_paths.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths.xml \
-    $(DEVICE_PATH)/configs/audio/audio_board_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_board_info.xml
+# Audio - Configuration
+PRODUCT_PACKAGES += \
+    audio_board_info.xml \
+    mixer_gains.xml \
+    mixer_paths.xml
 
 # FM Radio
 PRODUCT_PACKAGES += \
@@ -45,9 +45,9 @@ PRODUCT_PACKAGES += \
 $(call soong_config_set,libfmjni,vendor,slsi)
 
 # Init
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/init/init.a25x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.a25x.rc \
-    $(DEVICE_PATH)/configs/init/init.a25x.unify.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.a25x.unify.rc
+PRODUCT_PACKAGES += \
+    init.a25x.rc \
+    init.a25x.unify.rc
 
 # Matlog
 ifeq ($(TARGET_BUILD_VARIANT),user)
@@ -57,9 +57,10 @@ endif
 # Nfc
 PRODUCT_PACKAGES += android.hardware.nfc@1.2-service.st
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
-    $(DEVICE_PATH)/configs/nfc/libnfc-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf
+# Nfc - Configuration
+PRODUCT_PACKAGES += \
+    libnfc-nci.conf \
+    libnfc-hal-st.conf
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
@@ -77,5 +78,4 @@ PRODUCT_COPY_FILES += \
     $(EMPTY_PLACEHOLDER):$(TARGET_COPY_OUT_VENDOR)/firmware/vts.bin
 
 # Soong namespaces
-PRODUCT_SOONG_NAMESPACES += \
-    $(DEVICE_PATH) \
+PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
