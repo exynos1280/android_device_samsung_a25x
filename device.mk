@@ -54,7 +54,7 @@ TARGET_DISABLE_MATLOG := true
 endif
 
 # Nfc
-PRODUCT_PACKAGES += android.hardware.nfc@1.2-service.st
+PRODUCT_PACKAGES += android.hardware.nfc-service.st
 
 # Nfc - Configuration
 PRODUCT_PACKAGES += \
