@@ -42,6 +42,7 @@ blob_fixups: blob_fixups_user_type = {
         .binary_regex_replace(b'_ZN7android5Fence', b'_ZN7exynos55Fence'),
     # Keymint
     (
+        'vendor/bin/hw/android.hardware.security.keymint-service.samsung',
         'vendor/lib64/libskeymint10device.so',
         'vendor/lib64/libskeymint_cli.so',
     ): blob_fixup()
@@ -53,21 +54,6 @@ blob_fixups: blob_fixups_user_type = {
              'android.hardware.security.sharedsecret-V1-ndk.so')
         .add_needed('android.hardware.security.rkp-V3-ndk.so')
         .replace_needed('libcrypto.so', 'libcrypto-tm.so')
-        .add_needed('libshim_crypto.so'),
-    'vendor/bin/hw/android.hardware.security.keymint-service.samsung': blob_fixup()
-        .replace_needed('android.hardware.security.keymint-V1-ndk_platform.so',
-            'android.hardware.security.keymint-V3-ndk.so')
-        .replace_needed('android.hardware.security.keymint-V1-ndk_platform',
-            'android.hardware.security.keymint-V3-ndk')
-        .replace_needed('android.hardware.security.keymint-V1-ndk',
-            'android.hardware.security.keymint-V3-ndk')
-        .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so',
-            'android.hardware.security.secureclock-V1-ndk.so')
-        .replace_needed('android.hardware.security.sharedsecret-V1-ndk_platform.so',
-             'android.hardware.security.sharedsecret-V1-ndk.so')
-        .add_needed('android.hardware.security.rkp-V3-ndk.so')
-        .replace_needed('libcrypto.so', 'libcrypto-tm.so')
-        .replace_needed('libssl.so', 'libssl-tm.so')
         .add_needed('libshim_crypto.so'),
 }  # fmt: skip
 
