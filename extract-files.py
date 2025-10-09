@@ -54,7 +54,8 @@ blob_fixups: blob_fixups_user_type = {
              'android.hardware.security.sharedsecret-V1-ndk.so')
         .add_needed('android.hardware.security.rkp-V3-ndk.so')
         .replace_needed('libcrypto.so', 'libcrypto-tm.so')
-        .add_needed('libshim_crypto.so'),
+        .add_needed('libshim_crypto.so')
+        .add_needed('libbase_shim.so'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
