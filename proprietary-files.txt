@@ -31,6 +31,12 @@ vendor/firmware/SM-A256B/AP_AUDIO_SLSI.bin|8b41b80969b5a09d8f72d34cef2fe2d3b4e5e
 vendor/firmware/SM-A256B/calliope_sram.bin|492d60ea7a1db1d64d978642c18b89472cb79909
 vendor/firmware/SM-A256B/vts.bin|0197a7979327be0387d78fcc4e8fbcebff8aaabf
 
+# Audio - Firmware - Placeholders
+vendor/firmware/APDV_AUDIO_SLSI.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+vendor/firmware/AP_AUDIO_SLSI.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+vendor/firmware/calliope_sram.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+vendor/firmware/vts.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+
 # Bluetooth - Firmware
 vendor/etc/wifi/mx140_bt.hcf
 
@@ -97,6 +103,11 @@ vendor/firmware/SM-A256B/os.checked.bin|98cb2d6805d524bf4c6b4122697b510152d60171
 # NFC
 vendor/etc/nfc/st21nfc_conf.txt
 vendor/lib64/nfc_nci.st21nfc.st.so
+
+# Firmware - Placeholders
+vendor/firmware/NPU.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+vendor/firmware/mfc_fw.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
+vendor/firmware/os.checked.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
 
 # Ramdisk - Firmware
 vendor/firmware/ft3519_a25x.bin:vendor_ramdisk/vendor/firmware/ft3519_a25x.bin
