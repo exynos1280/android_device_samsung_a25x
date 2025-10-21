@@ -31,6 +31,3 @@ BOARD_DTBO_CFG := $(DEVICE_PATH)/configs/a25x.cfg
 
 # FM Radio
 BOARD_HAVE_SLSI_FM := true
-
-# Properties
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
