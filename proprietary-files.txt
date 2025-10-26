@@ -137,11 +137,6 @@ vendor/lib64/libshctrl.so
 vendor/lib64/vendor.samsung.hardware.security.drk-V1-ndk_platform.so
 vendor/lib64/vendor.samsung.hardware.security.drk@2.0.so
 
-# Security - Keymint
-vendor/bin/hw/android.hardware.security.keymint-service:vendor/bin/hw/android.hardware.security.keymint-service.samsung
-vendor/lib64/libskeymint10device.so
-vendor/lib64/libskeymint_cli.so
-
 # Security - TEEgris - Firmware - for SM-A256E
 vendor/tee/driver/00000000-0000-0000-0000-494363447256:vendor/tee/SM-A256E/driver/00000000-0000-0000-0000-494363447256
 vendor/tee/driver/00000000-0000-0000-0000-4d53546d7374:vendor/tee/SM-A256E/driver/00000000-0000-0000-0000-4d53546d7374
