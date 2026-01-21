@@ -1,0 +1,78 @@
+From ba6c6ba8bd6daefdf97d8adb59b1ad289f1be03e Mon Sep 17 00:00:00 2001
+From: ValdikSS <iam@valdikss.org.ru>
+Date: Tue, 20 Jan 2026 07:10:06 +0300
+Subject: [PATCH 1/5] Add CHANNEL_MODE_DUAL_CHANNEL constant
+
+Add Dual Channel mode constant to BluetoothCodecConfig API for SBC HD
+audio support. Also update BluetoothCodecStatus to allow selecting
+Dual Channel mode for SBC codec even when not advertised by the headphones,
+as Dual Channel is part of the SBC specification and all devices support it.
+
+Adapted for Android 16 QPR1 from LineageOS patches.
+
+Co-authored-by: Flopster101 <nahuelgomez329@gmail.com>
+Signed-off-by: Flopster101 <nahuelgomez329@gmail.com>
+Change-Id: Id8601789879f9ded097aebb883fa3456bf74988e
+---
+ .../java/android/bluetooth/BluetoothCodecConfig.java  | 11 ++++++++++-
+ .../java/android/bluetooth/BluetoothCodecStatus.java  |  7 ++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/framework/java/android/bluetooth/BluetoothCodecConfig.java b/framework/java/android/bluetooth/BluetoothCodecConfig.java
+index 795aec9..e504ba0 100644
+--- a/framework/java/android/bluetooth/BluetoothCodecConfig.java
++++ b/framework/java/android/bluetooth/BluetoothCodecConfig.java
+@@ -206,7 +206,7 @@ public final class BluetoothCodecConfig implements Parcelable {
+     /** @hide */
+     @IntDef(
+             prefix = "CHANNEL_MODE_",
+-            value = {CHANNEL_MODE_NONE, CHANNEL_MODE_MONO, CHANNEL_MODE_STEREO})
++            value = {CHANNEL_MODE_NONE, CHANNEL_MODE_MONO, CHANNEL_MODE_STEREO, CHANNEL_MODE_DUAL_CHANNEL})
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface ChannelMode {}
+ 
+@@ -219,6 +219,12 @@ public final class BluetoothCodecConfig implements Parcelable {
+     /** Codec channel mode STEREO. */
+     public static final int CHANNEL_MODE_STEREO = 0x1 << 1;
+ 
++    /**
++     * Codec channel mode DUAL_CHANNEL. Used for SBC HD audio.
++     * @hide
++     */
++    public static final int CHANNEL_MODE_DUAL_CHANNEL = 0x1 << 2;
++
+     private final @Nullable BluetoothCodecType mCodecType;
+     private @CodecPriority int mCodecPriority;
+     private final @SampleRate int mSampleRate;
+@@ -446,6 +452,9 @@ public final class BluetoothCodecConfig implements Parcelable {
+         if ((mChannelMode & CHANNEL_MODE_STEREO) != 0) {
+             channelModeStr = appendCapabilityToString(channelModeStr, "STEREO");
+         }
++        if ((mChannelMode & CHANNEL_MODE_DUAL_CHANNEL) != 0) {
++            channelModeStr = appendCapabilityToString(channelModeStr, "DUAL_CHANNEL");
++        }
+ 
+         return ("{codecName:" + codecName)
+                 + (",mCodecType:" + codecType)
+diff --git a/framework/java/android/bluetooth/BluetoothCodecStatus.java b/framework/java/android/bluetooth/BluetoothCodecStatus.java
+index d7fedaa..e83afcf 100644
+--- a/framework/java/android/bluetooth/BluetoothCodecStatus.java
++++ b/framework/java/android/bluetooth/BluetoothCodecStatus.java
+@@ -127,8 +127,13 @@ public final class BluetoothCodecStatus implements Parcelable {
+                 continue;
+             }
+             int channelMode = codecConfig.getChannelMode();
++            // Allow Dual Channel (0x4) for SBC codec even if not advertised by headphones.
++            // SBC Dual Channel is part of the SBC spec and all devices support it.
++            boolean isDualChannelSbc = (channelMode == BluetoothCodecConfig.CHANNEL_MODE_DUAL_CHANNEL
++                    && codecConfig.getCodecType() == BluetoothCodecConfig.SOURCE_CODEC_TYPE_SBC);
+             if ((channelMode & selectableConfig.getChannelMode()) == 0
+-                    && channelMode != BluetoothCodecConfig.CHANNEL_MODE_NONE) {
++                    && channelMode != BluetoothCodecConfig.CHANNEL_MODE_NONE
++                    && !isDualChannelSbc) {
+                 continue;
+             }
+             return true;
+-- 
+2.54.0
+

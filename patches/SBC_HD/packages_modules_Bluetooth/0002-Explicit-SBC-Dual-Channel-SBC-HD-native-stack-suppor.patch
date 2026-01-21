@@ -1,0 +1,244 @@
+From ce44556be16d7687e8a715ccf79829222f59cbf0 Mon Sep 17 00:00:00 2001
+From: ValdikSS <iam@valdikss.org.ru>
+Date: Tue, 20 Jan 2026 07:11:53 +0300
+Subject: [PATCH 2/5] Explicit SBC Dual Channel (SBC HD) native stack support
+
+Add BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL to the native Bluetooth HAL
+and update the SBC codec implementation to properly handle Dual Channel mode.
+
+Dual Channel encodes channels separately, using the entire bitpool for each
+channel. This allows achieving higher bitrates (up to ~600 kbps) compared to
+Joint Stereo's ~328 kbps limit with the common bitpool value of 53.
+
+This commit adds:
+- DUAL_CHANNEL enum to btav_a2dp_codec_channel_mode_t in bt_av.h
+- Proper DUAL_CHANNEL handling in a2dp_sbc.cc codec selection
+- Empty switch cases for DUAL_CHANNEL in other codec files (AAC, aptX,
+  aptX HD, LDAC, Opus) to fix -Wswitch compiler errors
+
+Adapted for Android 16 QPR1 from LineageOS patches.
+
+Co-authored-by: Flopster101 <nahuelgomez329@gmail.com>
+Signed-off-by: Flopster101 <nahuelgomez329@gmail.com>
+Change-Id: I4d51a2cf2f13c5b64ff8f49dc4f74c5c24da4f67
+---
+ system/include/hardware/bt_av.h          |  5 ++++-
+ system/stack/a2dp/a2dp_aac.cc            |  7 +++++++
+ system/stack/a2dp/a2dp_sbc.cc            | 21 ++++++++++++++++++---
+ system/stack/a2dp/a2dp_vendor_aptx.cc    |  7 +++++++
+ system/stack/a2dp/a2dp_vendor_aptx_hd.cc |  7 +++++++
+ system/stack/a2dp/a2dp_vendor_ldac.cc    |  7 +++++++
+ system/stack/a2dp/a2dp_vendor_opus.cc    |  7 +++++++
+ 7 files changed, 57 insertions(+), 4 deletions(-)
+
+diff --git a/system/include/hardware/bt_av.h b/system/include/hardware/bt_av.h
+index 9e8e342..6fd2d26 100644
+--- a/system/include/hardware/bt_av.h
++++ b/system/include/hardware/bt_av.h
+@@ -133,7 +133,8 @@ typedef enum {
+ typedef enum {
+   BTAV_A2DP_CODEC_CHANNEL_MODE_NONE = 0x0,
+   BTAV_A2DP_CODEC_CHANNEL_MODE_MONO = 0x1 << 0,
+-  BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO = 0x1 << 1
++  BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO = 0x1 << 1,
++  BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL = 0x1 << 2  // SBC HD Dual Channel
+ } btav_a2dp_codec_channel_mode_t;
+ 
+ typedef enum {
+@@ -231,6 +232,8 @@ struct btav_a2dp_codec_config_t {
+     AppendCapability(channel_mode_str, (channel_mode & BTAV_A2DP_CODEC_CHANNEL_MODE_MONO), "MONO");
+     AppendCapability(channel_mode_str, (channel_mode & BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO),
+                      "STEREO");
++    AppendCapability(channel_mode_str, (channel_mode & BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL),
++                     "DUAL_CHANNEL");
+ 
+     return "codec: " + CodecNameStr() + " priority: " + std::to_string(codec_priority) +
+            " sample_rate: " + sample_rate_str + " bits_per_sample: " + bits_per_sample_str +
+diff --git a/system/stack/a2dp/a2dp_aac.cc b/system/stack/a2dp/a2dp_aac.cc
+index cb19031..7af81ea 100644
+--- a/system/stack/a2dp/a2dp_aac.cc
++++ b/system/stack/a2dp/a2dp_aac.cc
+@@ -931,6 +931,9 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for AAC
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -1178,6 +1181,10 @@ tA2DP_STATUS A2dpCodecConfigAacBase::setCodecConfig(const uint8_t* p_peer_codec_
+         codec_config_.channel_mode = codec_user_config_.channel_mode;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for AAC
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+diff --git a/system/stack/a2dp/a2dp_sbc.cc b/system/stack/a2dp/a2dp_sbc.cc
+index 8092cf7..dd65c9c 100644
+--- a/system/stack/a2dp/a2dp_sbc.cc
++++ b/system/stack/a2dp/a2dp_sbc.cc
+@@ -848,7 +848,7 @@ A2dpCodecConfigSbcSource::A2dpCodecConfigSbcSource(btav_a2dp_codec_priority_t co
+     codec_local_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
+   }
+   if (a2dp_sbc_source_caps.ch_mode & A2DP_SBC_IE_CH_MD_DUAL) {
+-    codec_local_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
++    codec_local_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
+   }
+ }
+ 
+@@ -1010,6 +1010,16 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      if (ch_mode & A2DP_SBC_IE_CH_MD_DUAL) {
++        p_result->ch_mode = A2DP_SBC_IE_CH_MD_DUAL;
++        p_codec_config->channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
++        return true;
++      }
++      // Fallback: force Dual Channel even if not advertised (SBC HD feature)
++      p_result->ch_mode = A2DP_SBC_IE_CH_MD_DUAL;
++      p_codec_config->channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
++      return true;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -1199,6 +1209,11 @@ tA2DP_STATUS A2dpCodecConfigSbcBase::setCodecConfig(const uint8_t* p_peer_codec_
+         break;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Force Dual Channel for SBC HD, regardless of peer capability
++      result_config_cie.ch_mode = A2DP_SBC_IE_CH_MD_DUAL;
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+@@ -1217,7 +1232,7 @@ tA2DP_STATUS A2dpCodecConfigSbcBase::setCodecConfig(const uint8_t* p_peer_codec_
+       codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
+     }
+     if (ch_mode & A2DP_SBC_IE_CH_MD_DUAL) {
+-      codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
++      codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
+     }
+ 
+     if (codec_config_.channel_mode != BTAV_A2DP_CODEC_CHANNEL_MODE_NONE) {
+@@ -1415,7 +1430,7 @@ bool A2dpCodecConfigSbcBase::setPeerCodecCapabilities(const uint8_t* p_peer_code
+     codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
+   }
+   if (ch_mode & A2DP_SBC_IE_CH_MD_DUAL) {
+-    codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
++    codec_selectable_capability_.channel_mode |= BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
+   }
+ 
+   log::assert_that(
+diff --git a/system/stack/a2dp/a2dp_vendor_aptx.cc b/system/stack/a2dp/a2dp_vendor_aptx.cc
+index 1be16a5..dc3bb34 100644
+--- a/system/stack/a2dp/a2dp_vendor_aptx.cc
++++ b/system/stack/a2dp/a2dp_vendor_aptx.cc
+@@ -534,6 +534,9 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for aptX
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -713,6 +716,10 @@ tA2DP_STATUS A2dpCodecConfigAptx::setCodecConfig(const uint8_t* p_peer_codec_inf
+         codec_config_.channel_mode = codec_user_config_.channel_mode;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for aptX
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+diff --git a/system/stack/a2dp/a2dp_vendor_aptx_hd.cc b/system/stack/a2dp/a2dp_vendor_aptx_hd.cc
+index 5624ba5..580c98c 100644
+--- a/system/stack/a2dp/a2dp_vendor_aptx_hd.cc
++++ b/system/stack/a2dp/a2dp_vendor_aptx_hd.cc
+@@ -551,6 +551,9 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for aptX HD
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -727,6 +730,10 @@ tA2DP_STATUS A2dpCodecConfigAptxHd::setCodecConfig(const uint8_t* p_peer_codec_i
+         codec_config_.channel_mode = codec_user_config_.channel_mode;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for aptX HD
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+diff --git a/system/stack/a2dp/a2dp_vendor_ldac.cc b/system/stack/a2dp/a2dp_vendor_ldac.cc
+index e73fb1f..d7e6846 100644
+--- a/system/stack/a2dp/a2dp_vendor_ldac.cc
++++ b/system/stack/a2dp/a2dp_vendor_ldac.cc
+@@ -799,6 +799,9 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // SBC Dual Channel not applicable for LDAC
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -1035,6 +1038,10 @@ tA2DP_STATUS A2dpCodecConfigLdacBase::setCodecConfig(const uint8_t* p_peer_codec
+         break;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // SBC Dual Channel not applicable for LDAC
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+diff --git a/system/stack/a2dp/a2dp_vendor_opus.cc b/system/stack/a2dp/a2dp_vendor_opus.cc
+index 70377d8..4efa7d2 100644
+--- a/system/stack/a2dp/a2dp_vendor_opus.cc
++++ b/system/stack/a2dp/a2dp_vendor_opus.cc
+@@ -819,6 +819,9 @@ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_au
+         return true;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for Opus
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       break;
+   }
+@@ -1017,6 +1020,10 @@ tA2DP_STATUS A2dpCodecConfigOpusBase::setCodecConfig(const uint8_t* p_peer_codec
+         codec_config_.channel_mode = codec_user_config_.channel_mode;
+       }
+       break;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual channel not supported for Opus
++      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
++      break;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
+       codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+       break;
+-- 
+2.54.0
+

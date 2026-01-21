@@ -1,0 +1,153 @@
+From 1ca8f161f7538ce898d5bf3315f8942f228e21c1 Mon Sep 17 00:00:00 2001
+From: Flopster101 <nahuelgomez329@gmail.com>
+Date: Tue, 20 Jan 2026 16:53:26 +0300
+Subject: [PATCH 4/5] Allow auto-enabling SBC HD
+
+When persist.bluetooth.sbc_hd.enabled is set to true, SBC will
+automatically configure itself with:
+- Priority above AAC (disables AAC to ensure SBC selection)
+- Dual Channel mode for higher bitrate
+- codec_specific_1=0x1337 to trigger HD bitrates in the encoder
+
+The Audio HAL is also updated to map Dual Channel mode to stereo
+for proper audio routing.
+
+Enable with: adb shell setprop persist.bluetooth.sbc_hd.enabled true
+
+Signed-off-by: Flopster101 <nahuelgomez329@gmail.com>
+---
+ .../bluetooth/a2dp/A2dpCodecConfig.java       | 40 ++++++++++++++-----
+ .../aidl/a2dp/codec_status_aidl.cc            |  3 ++
+ system/stack/a2dp/a2dp_sbc.cc                 | 14 +++++++
+ 3 files changed, 47 insertions(+), 10 deletions(-)
+
+diff --git a/android/app/src/com/android/bluetooth/a2dp/A2dpCodecConfig.java b/android/app/src/com/android/bluetooth/a2dp/A2dpCodecConfig.java
+index 0e5ba8a..6235af3 100644
+--- a/android/app/src/com/android/bluetooth/a2dp/A2dpCodecConfig.java
++++ b/android/app/src/com/android/bluetooth/a2dp/A2dpCodecConfig.java
+@@ -41,6 +41,9 @@ import java.util.Objects;
+ class A2dpCodecConfig {
+     private static final String TAG = A2dpCodecConfig.class.getSimpleName();
+ 
++    // SBC HD auto-enable property - when true, SBC HD gets priority above AAC
++    private static final String SBC_HD_ENABLED_PROPERTY = "persist.bluetooth.sbc_hd.enabled";
++
+     private final Context mContext;
+     private final A2dpNativeInterface mA2dpNativeInterface;
+ 
+@@ -244,7 +247,12 @@ class A2dpCodecConfig {
+         } catch (NotFoundException e) {
+             value = BluetoothCodecConfig.CODEC_PRIORITY_DEFAULT;
+         }
+-        if ((value >= BluetoothCodecConfig.CODEC_PRIORITY_DISABLED)
++        // When SBC HD is enabled, disable AAC so SBC HD gets selected instead
++        boolean sbcHdEnabled = SystemProperties.getBoolean(SBC_HD_ENABLED_PROPERTY, false);
++        if (sbcHdEnabled) {
++            mA2dpSourceCodecPriorityAac = BluetoothCodecConfig.CODEC_PRIORITY_DISABLED;
++            Log.i(TAG, "SBC HD enabled: AAC codec disabled");
++        } else if ((value >= BluetoothCodecConfig.CODEC_PRIORITY_DISABLED)
+                 && (value < BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST)) {
+             mA2dpSourceCodecPriorityAac = value;
+         }
+@@ -300,11 +308,15 @@ class A2dpCodecConfig {
+ 
+         BluetoothCodecConfig codecConfig;
+         BluetoothCodecConfig[] codecConfigArray = new BluetoothCodecConfig[7];
+-        codecConfig =
+-                new BluetoothCodecConfig.Builder()
++        // When SBC HD enabled, configure standard SBC with Dual Channel + HD magic value
++        BluetoothCodecConfig.Builder sbcBuilder = new BluetoothCodecConfig.Builder()
+                         .setCodecType(BluetoothCodecConfig.SOURCE_CODEC_TYPE_SBC)
+-                        .setCodecPriority(mA2dpSourceCodecPrioritySbc)
+-                        .build();
++                        .setCodecPriority(sbcHdEnabled ? 2500 : mA2dpSourceCodecPrioritySbc);
++        if (sbcHdEnabled) {
++            sbcBuilder.setChannelMode(BluetoothCodecConfig.CHANNEL_MODE_DUAL_CHANNEL)
++                      .setCodecSpecific1(0x1337);
++        }
++        codecConfig = sbcBuilder.build();
+         codecConfigArray[0] = codecConfig;
+         codecConfig =
+                 new BluetoothCodecConfig.Builder()
+@@ -336,12 +348,20 @@ class A2dpCodecConfig {
+                         .setCodecPriority(mA2dpSourceCodecPriorityOpus)
+                         .build();
+         codecConfigArray[5] = codecConfig;
+-        codecConfig =
+-                new BluetoothCodecConfig.Builder()
++
++        // SBC HD config - when enabled via property, boost priority above AAC and use Dual Channel
++        // sbcHdEnabled already defined above when checking AAC priority
++        int sbcHdPriority = sbcHdEnabled ? 2500 : mA2dpSourceCodecPrioritySbc;  // 2500 > AAC's 2001
++        BluetoothCodecConfig.Builder sbcHdBuilder = new BluetoothCodecConfig.Builder()
+                         .setCodecType(BluetoothCodecConfig.SOURCE_CODEC_TYPE_SBC)
+-                        .setCodecPriority(mA2dpSourceCodecPrioritySbc)
+-                        .setCodecSpecific1(0x1337)
+-                        .build();
++                        .setCodecPriority(sbcHdPriority)
++                        .setCodecSpecific1(0x1337);  // SBC HD magic value
++        if (sbcHdEnabled) {
++            // Force Dual Channel mode when SBC HD is enabled
++            sbcHdBuilder.setChannelMode(BluetoothCodecConfig.CHANNEL_MODE_DUAL_CHANNEL);
++            Log.i(TAG, "SBC HD auto-enabled: priority=" + sbcHdPriority + ", Dual Channel mode");
++        }
++        codecConfig = sbcHdBuilder.build();
+         codecConfigArray[6] = codecConfig;
+ 
+         return codecConfigArray;
+diff --git a/system/audio_hal_interface/aidl/a2dp/codec_status_aidl.cc b/system/audio_hal_interface/aidl/a2dp/codec_status_aidl.cc
+index 95c8539..da63b78 100644
+--- a/system/audio_hal_interface/aidl/a2dp/codec_status_aidl.cc
++++ b/system/audio_hal_interface/aidl/a2dp/codec_status_aidl.cc
+@@ -105,6 +105,9 @@ static ChannelMode A2dpCodecToHalChannelMode(const btav_a2dp_codec_config_t& a2d
+       return ChannelMode::MONO;
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO:
+       return ChannelMode::STEREO;
++    case BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL:
++      // Dual Channel is stereo from audio HAL perspective (2 channels)
++      return ChannelMode::STEREO;
+     default:
+       return ChannelMode::UNKNOWN;
+   }
+diff --git a/system/stack/a2dp/a2dp_sbc.cc b/system/stack/a2dp/a2dp_sbc.cc
+index dd65c9c..c39cbb8 100644
+--- a/system/stack/a2dp/a2dp_sbc.cc
++++ b/system/stack/a2dp/a2dp_sbc.cc
+@@ -47,6 +47,7 @@
+ #include "gd/common/utils.h"
+ #include "hardware/bt_av.h"
+ #include "internal_include/bt_trace.h"
++#include "osi/include/properties.h"
+ #include "stack/include/bt_hdr.h"
+ 
+ #define A2DP_SBC_MAX_BITPOOL 53
+@@ -985,6 +986,14 @@ static bool select_best_channel_mode(uint8_t ch_mode, tA2DP_SBC_CIE* p_result,
+ static bool select_audio_channel_mode(const btav_a2dp_codec_config_t* p_codec_audio_config,
+                                       uint8_t ch_mode, tA2DP_SBC_CIE* p_result,
+                                       btav_a2dp_codec_config_t* p_codec_config) {
++  // SBC HD auto-enable: force Dual Channel when property is set
++  if (osi_property_get_bool("persist.bluetooth.sbc_hd.enabled", false)) {
++    p_result->ch_mode = A2DP_SBC_IE_CH_MD_DUAL;
++    p_codec_config->channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_DUAL_CHANNEL;
++    log::info("SBC HD: forcing Dual Channel mode via property");
++    return true;
++  }
++
+   switch (p_codec_audio_config->channel_mode) {
+     case BTAV_A2DP_CODEC_CHANNEL_MODE_MONO:
+       if (ch_mode & A2DP_SBC_IE_CH_MD_MONO) {
+@@ -1349,6 +1358,11 @@ tA2DP_STATUS A2dpCodecConfigSbcBase::setCodecConfig(const uint8_t* p_peer_codec_
+   if (codec_user_config_.codec_specific_1 != 0) {
+     codec_config_.codec_specific_1 = codec_user_config_.codec_specific_1;
+   }
++  // SBC HD: force codec_specific_1 = 0x1337 to enable HD bitrates
++  if (osi_property_get_bool("persist.bluetooth.sbc_hd.enabled", false)) {
++    codec_config_.codec_specific_1 = 0x1337;
++    log::info("SBC HD: forcing codec_specific_1=0x1337 for HD bitrates");
++  }
+   if (codec_user_config_.codec_specific_2 != 0) {
+     codec_config_.codec_specific_2 = codec_user_config_.codec_specific_2;
+   }
+-- 
+2.54.0
+

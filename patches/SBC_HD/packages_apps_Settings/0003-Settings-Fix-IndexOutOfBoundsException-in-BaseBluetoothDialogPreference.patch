@@ -1,0 +1,35 @@
+From 1ccf9137e8286272498f96c3e8cfa13a31ab86f7 Mon Sep 17 00:00:00 2001
+From: Flopster101 <nahuelgomez329@gmail.com>
+Date: Thu, 11 Jun 2026 01:24:01 -0300
+Subject: [PATCH] Settings: Fix IndexOutOfBoundsException in
+ BaseBluetoothDialogPreference
+
+Add safety bounds check and fallback for Dual Channel (index 3) to prevent IndexOutOfBoundsException when using localized values.
+---
+ .../bluetooth/BaseBluetoothDialogPreference.java         | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/com/android/settings/development/bluetooth/BaseBluetoothDialogPreference.java b/src/com/android/settings/development/bluetooth/BaseBluetoothDialogPreference.java
+index b0c60a8..92ebaa5 100644
+--- a/src/com/android/settings/development/bluetooth/BaseBluetoothDialogPreference.java
++++ b/src/com/android/settings/development/bluetooth/BaseBluetoothDialogPreference.java
+@@ -130,8 +130,15 @@ public abstract class BaseBluetoothDialogPreference extends CustomDialogPreferen
+      * Method to get summary strings by index.
+      */
+     protected String generateSummary(int index) {
+-        if (index > mSummaryStrings.size()) {
++        if (index < 0 || index >= mSummaryStrings.size()) {
+             Log.e(TAG, "Unable to get summary of " + index + ". Size is " + mSummaryStrings.size());
++            if (index == 3) {
++                // Fallback for Dual Channel mode if translations are missing
++                return String.format(getContext().getResources().getString(
++                        com.android.settingslib.R
++                                .string.bluetooth_select_a2dp_codec_streaming_label),
++                        "Dual Channel (SBC HD)");
++            }
+             return null;
+         }
+         return index == getDefaultIndex() ? mSummaryStrings.get(getDefaultIndex()) :
+-- 
+2.54.0
+
