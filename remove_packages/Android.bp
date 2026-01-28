@@ -10,4 +10,5 @@ cc_prebuilt_binary {
         none: true,
     },
     srcs: ["RemovePackagesA25"],
+    check_elf_files: false,
 }
