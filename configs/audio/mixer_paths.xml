@@ -80,6 +80,8 @@
 
     <ctl name="ABOX UDMA WR0 Periods" value="4" />
     <ctl name="ABOX UDMA RD0 Periods" value="2" />
+    <ctl name="ABOX UDMA RD0 Channel" value="1"/>
+    <ctl name="ABOX UDMA RD0 Expand" value="1"/>
 
     <ctl name="ABOX SPDY Rate" value="40000" />
     <ctl name="ABOX SPDY CAP SPDY Switch" value="0" />
