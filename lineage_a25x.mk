@@ -29,6 +29,9 @@ PRODUCT_MANUFACTURER := samsung
 PRODUCT_SHIPPING_API_LEVEL := 34
 PRODUCT_CHARACTERISTICS := phone
 
+# Lunaris
+PRODUCT_SYSTEM_PROPERTIES += ro.lunaris.maintainer=Flopster101
+
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="a25xdxx-user 15 AP3A.240905.015.A2 A256EXXS8CYG3 release-keys" \
     BuildFingerprint=samsung/a25xdxx/essi:15/AP3A.240905.015.A2/A256EXXS8CYG3:user/release-keys \
