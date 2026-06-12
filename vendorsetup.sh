@@ -27,13 +27,14 @@ if [ "$SKIP_SBC_HD_PATCHES" != "1" ]; then
     )
   fi
 
-  # packages/apps/Settings patches (channel mode dialog + developer options toggles + crash fix)
-  if ! grep -q "Fallback for Dual Channel mode" "packages/apps/Settings/src/com/android/settings/development/bluetooth/BaseBluetoothDialogPreference.java"; then
+  # packages/apps/Settings patches (channel mode dialog + developer options toggles + crash fix + empty layout fix)
+  if ! grep -q "Always populating exactly 4 items" "packages/apps/Settings/src/com/android/settings/development/bluetooth/BluetoothChannelModeDialogPreference.java"; then
     (
       cd "packages/apps/Settings"
       git am -3 "$SCRIPTS_ROOT/patches/SBC_HD/packages_apps_Settings/0001-Add-Dual-Channel-into-Bluetooth-Audio-Channel-Mode-dialog.patch"
       git am -3 "$SCRIPTS_ROOT/patches/SBC_HD/packages_apps_Settings/0002-Settings-Add-SBC-HD-Developer-Options-toggles.patch"
       git am -3 "$SCRIPTS_ROOT/patches/SBC_HD/packages_apps_Settings/0003-Settings-Fix-IndexOutOfBoundsException-in-BaseBluetoothDialogPreference.patch"
+      git am -3 "$SCRIPTS_ROOT/patches/SBC_HD/packages_apps_Settings/0004-Settings-Fix-empty-radio-buttons-in-Channel-Mode-dialog.patch"
     )
   fi
 
