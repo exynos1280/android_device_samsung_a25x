@@ -31,6 +31,8 @@ PRODUCT_CHARACTERISTICS := phone
 
 # Lunaris
 PRODUCT_SYSTEM_PROPERTIES += ro.lunaris.maintainer=Flopster101
+TARGET_USE_MAPS := true
+TARGET_USE_FILES := true
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="a25xdxx-user 15 AP3A.240905.015.A2 A256EXXS8CYG3 release-keys" \
