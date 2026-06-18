@@ -25,16 +25,6 @@ namespace_imports = [
     'vendor/samsung/s5e8825-common',
 ]
 
-
-def lib_fixup_device_dep(lib: str, *_):
-    return f'//device/samsung/s5e8825-common/shims/stub:{lib}'
-
-
-lib_fixups: lib_fixups_user_type = {
-    'libexynoscamera3': lib_fixup_device_dep,
-}  # fmt: skip
-
-
 blob_fixups: blob_fixups_user_type = {
     # Camera
     'vendor/lib64/libexynoscamera3.so': blob_fixup()
