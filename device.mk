@@ -33,7 +33,6 @@ endif
 # Audio - Configuration
 PRODUCT_PACKAGES += \
     audio_board_info.xml \
-    mixer_gains.xml \
     mixer_paths.xml
 
 # FM Radio
