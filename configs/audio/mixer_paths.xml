@@ -82,6 +82,7 @@
     <ctl name="ABOX UDMA RD0 Periods" value="2" />
 
     <ctl name="ABOX SPDY Rate" value="40000" />
+    <ctl name="ABOX SPDY CAP SPDY Switch" value="0" />
 
     <!-- A-Box Default Configuration for Speaker Path -->
     <ctl name="ABOX SPUS ASRC0" value="0" />
@@ -2294,6 +2295,7 @@
         <path name="route-nsrc2-to-wdma2" />
         <ctl name="ABOX VDSP0" value="fm-radio-wdma2-bdsrccom6" />
         <path name="acquire-abox-wakelock" />
+        <ctl name="ABOX SPDY CAP SPDY Switch" value="1" />
     </path>
 
     <path name="recording-fm-tuner">
@@ -2311,13 +2313,11 @@
     <path name="fm_radio-speaker">
         <path name="dev-dual-speaker" />
         <path name="route-normal-spkrcv-playback" />
-        <path name="route-fm_radio-speaker-comp-pipeline" />
     </path>
 
     <path name="fm_radio-speaker-bottom">
         <path name="dev-speaker-bottom" />
         <path name="route-normal-spkrcv-playback" />
-        <path name="route-fm_radio-speaker-comp-pipeline" />
     </path>
 
     <path name="fm_radio-headset">
@@ -2325,7 +2325,6 @@
         <path name="route-normal-headset-playback" />
         <path name="route-normal-volume-mointor" />
         <ctl name="ABOX VDSP1" value="volume-monitor" />
-        <path name="route-fm_radio-comp-pipeline" />
     </path>
 
     <path name="fm_radio-headphone">
@@ -2333,7 +2332,6 @@
         <path name="route-normal-headset-playback" />
         <path name="route-normal-volume-mointor" />
         <ctl name="ABOX VDSP1" value="volume-monitor" />
-        <path name="route-fm_radio-comp-pipeline" />
     </path>
 
     <path name="fm_radio-usb-headset">
@@ -2341,7 +2339,6 @@
         <path name="route-rdmas-to-sifs0" />
         <ctl name="ABOX VDSP1" value="usb-playback" />
         <ctl name="ABOX Sound Type" value="USB" />
-        <path name="route-fm_radio-comp-pipeline" />
     </path>
 
     <path name="fm_radio-async-usb-headset">
@@ -2349,7 +2346,6 @@
         <path name="route-rdmas-to-sifs0" />
         <ctl name="ABOX VDSP1" value="asyncusb-playback" />
         <ctl name="ABOX Sound Type" value="USB" />
-        <path name="route-fm_radio-comp-pipeline" />
     </path>
 
     <path name="fm_radio-bt-a2dp-headphone">
@@ -2357,7 +2353,6 @@
         <path name="route-rdmas-to-sifs0" />
         <ctl name="ABOX VDSP1" value="bta2dp-playback" />
         <ctl name="ABOX Sound Type" value="BTVOICE" />
-        <path name="route-fm_radio-comp-pipeline" />
     </path>
 
     <!-- For BT A2DP : FM rx to AP tx -->
