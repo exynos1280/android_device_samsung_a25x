@@ -35,6 +35,11 @@ PRODUCT_PACKAGES += \
     audio_board_info.xml \
     mixer_paths.xml
 
+# AxionFX DSP
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/dsp/spk-s5e8825_a25x_1.json:$(TARGET_COPY_OUT_VENDOR)/etc/dsp/spk-s5e8825_a25x_1.json \
+    $(DEVICE_PATH)/configs/dsp/default_speaker_tuning.txt:$(TARGET_COPY_OUT_VENDOR)/etc/dsp/default_speaker_tuning.txt
+
 # FM Radio
 PRODUCT_PACKAGES += \
     FMRadio \
