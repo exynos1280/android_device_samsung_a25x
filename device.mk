@@ -61,9 +61,15 @@ PRODUCT_PACKAGES += \
     libnfc-hal-st.conf
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
+PRODUCT_PACKAGES += \
+    A25DialerOverlay \
+    A25FrameworkResOverlay \
+    A25SettingsProviderOverlay \
+    A25SettingsRes \
+    A25SystemUIOverlay \
+    A25WiFiOverlay
 
-PRODUCT_PACKAGES += A25SettingsRes
+PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
