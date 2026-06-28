@@ -4,12 +4,6 @@
 //
 
 prebuilt_etc {
-    name: "audio_board_info.xml",
-    src: "audio_board_info.xml",
-    vendor: true,
-}
-
-prebuilt_etc {
     name: "mixer_paths.xml",
     src: "mixer_paths.xml",
     vendor: true,
