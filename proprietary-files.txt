@@ -53,7 +53,7 @@ vendor/lib64/libsec2lsi_conversion.so
 vendor/lib64/libswlme.so
 
 # Camera - Patched HAL
-vendor/lib64/libexynoscamera3.so|d4f12c549b72cb2419663ac96ebebb6c5b49e6a4|dfa12fb643bd1f71d54ccdd805ef8f164f5338ad
+vendor/lib64/libexynoscamera3.so|cdb3c93366c46ba639378cab3d839ed98afbb85e|075f5010cd26fc9c629816e6e1dc33f7395ac950
 
 # Display - Calibration
 vendor/etc/dqe/calib_data_atc_s6e3fc3_a25x.xml
