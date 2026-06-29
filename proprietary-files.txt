@@ -37,6 +37,11 @@ vendor/firmware/AP_AUDIO_SLSI.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
 vendor/firmware/calliope_sram.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
 vendor/firmware/vts.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
 
+# Audio - SoundBooster
+vendor/etc/SoundBoosterParam.txt
+vendor/lib64/lib_SoundBooster_ver1130.so
+vendor/lib64/soundfx/libsamsungSoundbooster_plus.so
+
 # Bluetooth - Firmware
 vendor/firmware/wifi/mx140_bt.hcf
 
