@@ -35,10 +35,13 @@ PRODUCT_PACKAGES += mixer_paths.xml
 
 # FM Radio
 PRODUCT_PACKAGES += \
-    FMRadio \
-    libfmjni
+    RevampedFMRadio \
+    libfmjni_slsi
 
 $(call soong_config_set,libfmjni,vendor,slsi)
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.vendor.fm.use_audio_session=true
 
 # Init
 PRODUCT_PACKAGES += \
