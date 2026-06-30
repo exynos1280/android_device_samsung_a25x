@@ -42,6 +42,10 @@ vendor/etc/SoundBoosterParam.txt
 vendor/lib64/lib_SoundBooster_ver1130.so
 vendor/lib64/soundfx/libsamsungSoundbooster_plus.so
 
+# Audio - SoundAlive
+vendor/lib64/lib_SoundAlive_play_plus_ver500.so
+vendor/lib64/soundfx/libaudiosaplus_sec.so
+
 # Bluetooth - Firmware
 vendor/firmware/wifi/mx140_bt.hcf
 

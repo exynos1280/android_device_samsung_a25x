@@ -45,6 +45,11 @@ blob_fixups: blob_fixups_user_type = {
         # Before: [lsl x2,x8,#2]
         # After: [lsl x2,x8,#3]
         .sig_replace('02 f5 7e d3', '02 f1 7d d3'),
+    'vendor/lib64/soundfx/libaudiosaplus_sec.so': blob_fixup()
+        # Fix default device initialization to trigger Set_Speaker_Output on setDevice(2)
+        # Before: [format 5, device 2]
+        # After: [format 5, device 0]
+        .sig_replace('05 00 00 00 02 00 00 00', '05 00 00 00 00 00 00 00'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
