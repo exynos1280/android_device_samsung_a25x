@@ -44,7 +44,14 @@ blob_fixups: blob_fixups_user_type = {
         # Fix SB_process copy size for float stereo PCM
         # Before: [lsl x2,x8,#2]
         # After: [lsl x2,x8,#3]
-        .sig_replace('02 f5 7e d3', '02 f1 7d d3'),
+        .sig_replace('02 f5 7e d3', '02 f1 7d d3')
+        # Reorder SB_process check to execute a clean memcpy bypass on non-speaker devices
+        # Before: [ldrb w9; cbz w9, 381c; mov x20, x1; cbz x1, 3804; mov x19, x2; mov w0, #error; cbz x2, 3820]
+        # After:  [mov x20, x1; mov x19, x2; ldrb w9; cbz w9, 3768; cbz x1, 3804; mov w0, #error; cbz x2, 3820]
+        .sig_replace(
+            'a9 52 42 39 29 08 00 34 f4 03 01 aa 21 07 00 b4 f3 03 02 aa',
+            'f4 03 01 aa f3 03 02 aa a9 52 42 39 49 02 00 34 01 07 00 b4',
+        ),
     'vendor/lib64/soundfx/libaudiosaplus_sec.so': blob_fixup()
         # Fix default device initialization to trigger Set_Speaker_Output on setDevice(2)
         # Before: [format 5, device 2]
