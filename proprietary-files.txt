@@ -1,4 +1,4 @@
-# Proprietary files - from Samsung package version A256EXXU8DYI8, unless pinned
+# Proprietary files - from Samsung package version A256EXXUCEZE6, unless pinned
 
 # Audio - Firmware
 vendor/firmware/abov/a96t396_a25x_main.bin
@@ -19,11 +19,11 @@ vendor/firmware/AP_AUDIO_SLSI.bin:vendor/firmware/SM-A256E/AP_AUDIO_SLSI.bin
 vendor/firmware/calliope_sram.bin:vendor/firmware/SM-A256E/calliope_sram.bin
 vendor/firmware/vts.bin:vendor/firmware/SM-A256E/vts.bin
 
-# Audio - Firmware - from SM-A2560 - A2560ZHS7CYG4
+# Audio - Firmware - from SM-A2560 - A2560ZHUBEZE6
 vendor/firmware/SM-A2560/APDV_AUDIO_SLSI.bin|93ffe051b993056e60f644aacd28545509a96aff
 vendor/firmware/SM-A2560/AP_AUDIO_SLSI.bin|8b41b80969b5a09d8f72d34cef2fe2d3b4e5ed6e
-vendor/firmware/SM-A2560/calliope_sram.bin|c851c59c65b7a420e9575e80aabd63950b686683
-vendor/firmware/SM-A2560/vts.bin|3a386c86614a68ee2289303eba76fc0dd661fe1b
+vendor/firmware/SM-A2560/calliope_sram.bin|a88c70f9f1f9e6ce2fb18c8fd68fdcab6bac8985
+vendor/firmware/SM-A2560/vts.bin|847308c07ea142e1e847d8cad672c6a944958a76
 
 # Audio - Firmware - from SM-A256B - A256BXXS8CYG4
 vendor/firmware/SM-A256B/APDV_AUDIO_SLSI.bin|93ffe051b993056e60f644aacd28545509a96aff
@@ -99,10 +99,10 @@ vendor/firmware/NPU.bin:vendor/firmware/SM-A256E/NPU.bin
 vendor/firmware/mfc_fw.bin:vendor/firmware/SM-A256E/mfc_fw.bin
 vendor/firmware/os.checked.bin:vendor/firmware/SM-A256E/os.checked.bin
 
-# Firmware - from SM-A2560 - A2560ZHS7CYG4
-vendor/firmware/SM-A2560/NPU.bin|d20fb7b2a69516848f45da59229dd6bed177c795
-vendor/firmware/SM-A2560/mfc_fw.bin|68c8afce8c54584541ab7f3806230a9ac5798e1f
-vendor/firmware/SM-A2560/os.checked.bin|9786bf25e34da08649447e0267c6657a173a4e1a
+# Firmware - from SM-A2560 - A2560ZHUBEZE6
+vendor/firmware/SM-A2560/NPU.bin|e3a32b81ddc3461bc40eca4412966d65cb6d3acd
+vendor/firmware/SM-A2560/mfc_fw.bin|bbfdd1ea127f8ef7bdfe7d806c8c42610b8fef3c
+vendor/firmware/SM-A2560/os.checked.bin|e777a49a698561875842116af59cae22b298d977
 
 # Firmware - from SM-A256B - A256BXXS8CYG4
 vendor/firmware/SM-A256B/NPU.bin|176e37ac8c080b68a08c21520dc3150ee5309a5b
