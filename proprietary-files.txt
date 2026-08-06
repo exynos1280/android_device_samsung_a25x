@@ -40,7 +40,6 @@ vendor/firmware/vts.bin|da39a3ee5e6b4b0d3255bfef95601890afd80709
 # Audio - SoundBooster
 vendor/etc/SoundBoosterParam.txt
 vendor/lib64/lib_SoundBooster_ver1130.so
-vendor/lib64/soundfx/libsamsungSoundbooster_plus.so
 
 # Audio - SoundAlive
 vendor/lib64/lib_SoundAlive_play_plus_ver500.so
