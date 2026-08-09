@@ -2661,13 +2661,13 @@
     <path name="communication-usb-headset">
         <path name="route-usb-playback" />
         <path name="route-rdmas-to-sifs0" />
-        <ctl name="ABOX VDSP0" value="bdmixer-apcall-rxse-callrec" />
+        <ctl name="ABOX VDSP0" value="bdmixer-normal" />
     </path>
 
     <path name="communication-async-usb-headset">
         <path name="route-asyncusb-playback" />
         <path name="route-rdmas-to-sifs0" />
-        <ctl name="ABOX VDSP0" value="bdmixer-apcall-rxse-callrec" />
+        <ctl name="ABOX VDSP0" value="bdmixer-normal" />
         <ctl name="ABOX VDSP1" value="asyncusb-playback" />
     </path>
 
