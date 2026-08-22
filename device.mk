@@ -33,7 +33,7 @@ endif
 # Audio - Configuration
 PRODUCT_PACKAGES += mixer_paths.xml
 
-$(call soong_config_set,s5e8825,soundbooster_dsp_library,//vendor/samsung/a25x:lib_SoundBooster_ver1130)
+$(call soong_config_set,samsungAudioVars,soundbooster_dsp_library,//vendor/samsung/a25x:lib_SoundBooster_ver1130)
 
 # FM Radio
 PRODUCT_PACKAGES += \
